@@ -13,9 +13,12 @@ obj/
 # Rider
 .idea/
 
-# Visual Studio Code
+# Visual Studio
 .vscode/
 
+
+# Visual Studio Code
+.vs/
 
 # Windows image file caches
 Thumbs.db
