@@ -1,4 +1,5 @@
 import csv
+import os
 
 class Transliterator:
 
@@ -57,11 +58,14 @@ class Transliterator:
     
 
 def main():
+    print("Starting transliterator")
     arabic_word_diacritics = "بَّ"
 
     arabic_word_consonants_only = "اهلا وسهلا يا غالي"
 
-    Transliterator.extract_consonant_dictionary_from_csv("Dictionary.csv")
+    print(f"Current directory: {os.getcwd()}")
+
+    Transliterator.extract_consonant_dictionary_from_csv("../../Dictionary.csv")
 
     arabic_word_input = input("Enter an arabic word: ")
 
