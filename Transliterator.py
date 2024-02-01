@@ -1,5 +1,9 @@
 import csv
 import os
+import sys
+
+def test_function():
+    return f"this is running from the python script test function. current working directory is {os.getcwd()} and current file is {os.path.abspath(__file__)}" 
 
 class Transliterator:
 
@@ -67,7 +71,8 @@ def main():
 
     Transliterator.extract_consonant_dictionary_from_csv("../../Dictionary.csv")
 
-    arabic_word_input = input("Enter an arabic word: ")
+    # arabic_word_input = input("Enter an arabic word: ")
+    arabic_word_input = ""
 
     if arabic_word_input != "":
         print(f"You entered: {arabic_word_input}")

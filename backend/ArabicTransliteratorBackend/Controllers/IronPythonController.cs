@@ -15,7 +15,7 @@ public class IronPythonController : ControllerBase
     [HttpGet]
     public IActionResult ExecutePythonScript()
     {
-        _ironPythonService.ExecutePythonScript();
-        return Ok("Python script executed successfully!");
+        string result = _ironPythonService.ExecutePythonScript();
+        return Ok($"Python script executed successfully!. Python script output: {result}");
     }
 }
