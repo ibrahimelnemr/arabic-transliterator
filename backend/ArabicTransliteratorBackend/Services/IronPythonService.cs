@@ -8,16 +8,21 @@ public class IronPythonService
     {
         var engine = Python.CreateEngine();
         var scope = engine.CreateScope();
-        // engine.ExecuteFile("../../Transliterator.py", scope);
-        // engine.ExecuteFile("../../Transliterator.py");
-        // var scope = engine.GetSysModule();
-        // engine.ExecuteFile("../../test.py", scope);
         engine.ExecuteFile("../../Transliterator.py", scope);
         dynamic testFunction = scope.GetVariable("test_function");
-        string result = testFunction();
-        Console.WriteLine(result);
-        // var testFunction = engine.GetVariable<Func<string>>("s");
-        return result;
+        dynamic testClass = scope.GetVariable("TestClass");
+        
+        dynamic classInstance = engine.Operations.CreateInstance(testClass);
+        
+        string testClassFunctionResult = classInstance.test_class_function();
+        string testFunctionresult = testFunction();
+
+        Console.WriteLine("Test function result:");
+        Console.WriteLine(testFunctionresult);
+        Console.WriteLine();
+        Console.WriteLine("Test class function result:");
+        Console.WriteLine(testClassFunctionResult);
+        return testClassFunctionResult;
     }
     
 }

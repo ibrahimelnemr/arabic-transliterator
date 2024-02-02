@@ -5,6 +5,10 @@ import sys
 def test_function():
     return f"this is running from the python script test function. current working directory is {os.getcwd()} and current file is {os.path.abspath(__file__)}" 
 
+class TestClass:
+    def test_class_function(self):
+        return f"this is running from the python script class, TestClass, running test_class_function. current working directory is {os.getcwd()} and current file is {os.path.abspath(__file__)}"
+
 class Transliterator:
 
     ar_en_consonant_dict = {
