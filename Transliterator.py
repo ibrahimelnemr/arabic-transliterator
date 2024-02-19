@@ -21,6 +21,25 @@ class Transliterator:
     }
     
     @classmethod
+    def check_dictionary_file(filename):
+        current_directory = os.getcwd()
+        parent_directory = os.path.abspath(os.path.join(current_directory, os.pardir))
+        parent_of_parent_directory = os.path.abspath(os.path.join(parent_directory, os.pardir))
+
+        current_directory_file_path = os.path.join(current_directory, filename)
+        parent_directory_file_path = os.path.join(parent_directory, filename)
+        parent_of_parent_directory_file_path = os.path.join(parent_of_parent_directory, filename)
+        if os.path.isfile(current_directory_file_path):
+            print(f"Dictionary file found at {current_directory_file_path}")
+            return current_directory_file_path
+        elif os.path.isfile(parent_of_parent_directory_file_path):
+            print(f"Dictionary file found at {parent_of_parent_directory_file_path}")
+            return parent_of_parent_directory_file_path 
+        else:
+            print(f"No file found with name {filename} in current or parent of parent directory")
+            return ""
+    
+    @classmethod
     def remove_diacritics(cls, char):
         return ''.join(cls.ar_en_diacritic_dict.get(c, c) for c in char)
     
@@ -47,10 +66,24 @@ class Transliterator:
                 arabic_char = row['Arabic']
                 latin_char = row['Latin']
                 cls.ar_en_consonant_dict[arabic_char] = latin_char
-        print("Dictionary:")
+        print("Consonant Dictionary:")
         print("Arabic\tLatin")
         for arabic_char, latin_char in cls.ar_en_consonant_dict.items():
             print(f"{arabic_char}\t{latin_char}")
+
+    @classmethod
+    def extract_diacritic_dictionary_from_csv(cls, csv_file_path):
+        with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                arabic_char = row['Arabic']
+                latin_char = row['Latin']
+                cls.ar_en_diacritic_dict[arabic_char] = latin_char
+        print("Diacritic Dictionary:")
+        print("Arabic\tLatin")
+        for arabic_char, latin_char in cls.ar_en_diacritic_dict.items():
+            print(f"{arabic_char}\t{latin_char}")
+
 
     @classmethod
     def transliterate(cls, arabic_word):
@@ -73,7 +106,10 @@ def main():
 
     print(f"Current directory: {os.getcwd()}")
 
-    Transliterator.extract_consonant_dictionary_from_csv("../../Dictionary.csv")
+    consonant_dictionary_path = Transliterator.check_dictionary_file("Dictionary.csv")
+    
+
+    Transliterator.extract_consonant_dictionary_from_csv(consonant_dictionary_path)
 
     # arabic_word_input = input("Enter an arabic word: ")
     arabic_word_input = ""
