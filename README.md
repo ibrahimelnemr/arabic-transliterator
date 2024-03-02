@@ -16,4 +16,4 @@ To start app frontend locally
 
 `vue serve`
 
-Then open <a target="blank" href="http://localhost:8080/">http://localhost:8080/</a> in your browser
+Then open <a target="_blank" href="http://localhost:8080/">http://localhost:8080/</a> in your browser
