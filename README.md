@@ -1,8 +1,6 @@
 # arabic-transliterator
 
-This is a tool to allow for transliterating the Arabic 
-
-# Backend
+# Backend Local Setup
 
 To start app backend locally
 
@@ -10,7 +8,7 @@ To start app backend locally
 
 `dotnet run watch`
 
-# Frontend
+# Frontend Local Setup
 
 To start app frontend locally
 
