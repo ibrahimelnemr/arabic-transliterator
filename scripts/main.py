@@ -1,4 +1,4 @@
-from Transliterator import Transliterator 
+from scripts.Transliterator import Transliterator 
 import os
 
 def main():
