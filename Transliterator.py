@@ -62,10 +62,6 @@ class Transliterator:
         for arabic_char, latin_char in self.ar_en_diacritic_dict.items():
             print(f"{arabic_char}\t{latin_char}")
 
-    def transliterate(self, arabic_word):
-        english_equivalent = ''.join(self.get_base_character(char) for char in arabic_word)
-        
-        return english_equivalent
 
     def transliterate_consonants_only(self, arabic_word):
         english_word = ''.join(self.transliterate_consonant(char) for char in arabic_word)
