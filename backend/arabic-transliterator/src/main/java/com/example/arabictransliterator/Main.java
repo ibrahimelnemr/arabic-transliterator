@@ -1,4 +1,4 @@
-package scripts;
+package com.example.arabictransliterator;
 public class Main {
 
     public static void main(String[] args) {
