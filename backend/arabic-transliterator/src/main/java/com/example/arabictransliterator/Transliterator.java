@@ -25,6 +25,7 @@ public class Transliterator {
         this.arEnDiacriticDict = new HashMap<>();
     }
 
+    // check for dictionary file
     public String checkDictionaryFile(String filename) {
 
         String pathWithCSV = Paths.get("").toAbsolutePath().getParent().getParent() + File.separator + "files"
@@ -39,13 +40,57 @@ public class Transliterator {
             System.out.println("No file found with name " + filename + " in current or parent of parent directory");
             return "";
         }
-
     }
 
-    public String removeDiacritics(String character) {
+    // extract dictionary from csv
+    public void extractDictionaryFromCsv(String csvFilePath, Map<String, String> dictionary) {
+        try (Reader reader = new FileReader(csvFilePath);
+                CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
+            for (CSVRecord record : csvParser) {
+                String arabic = record.get("Arabic");
+                String latin = record.get("Latin");
+                dictionary.put(arabic, latin);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        printDictionary("Dictionary", dictionary);
+    }
+
+    // extract consonant dictionary from csv
+    public void extractConsonantDictionaryFromCsv(String csvFilePath) {
+        extractDictionaryFromCsv(csvFilePath, arEnConsonantDict);
+    }
+
+    // extract diacritic dictionary from csv
+    public void extractDiacriticDictionaryFromCsv(String csvFilePath) {
+        extractDictionaryFromCsv(csvFilePath, arEnDiacriticDict);
+    }
+
+    // print the dictionary
+    private void printDictionary(String dictionaryName, Map<String, String> dictionary) {
+        System.out.println(dictionaryName + ":");
+        System.out.println("Arabic\tLatin");
+        dictionary.forEach((arabic, latin) -> System.out.println(arabic + "\t" + latin));
+    }
+
+    public String transliterate(String arabicText, boolean consonantsOnly) {
+        if (consonantsOnly) {
+            StringBuilder englishWord = new StringBuilder();
+            for (char c : arabicText.toCharArray()) {
+                String transliteratedConsonant = transliterateConsonant(String.valueOf(c));
+                englishWord.append(transliteratedConsonant);
+            }
+            return englishWord.toString();
+        }
+
+        return "";
+    }
+
+    public String removeDiacritics(String letter) {
         StringBuilder result = new StringBuilder();
-        for (char c : character.toCharArray()) {
-            result.append(arEnDiacriticDict.getOrDefault(String.valueOf(c), String.valueOf(c)));
+        for (char diacritic : letter.toCharArray()) {
+            result.append(transliterateDiacritic(String.valueOf(diacritic)));
         }
         return result.toString();
     }
@@ -63,41 +108,5 @@ public class Transliterator {
 
     public String transliterateDiacritic(String arabicDiacritic) {
         return arEnDiacriticDict.getOrDefault(arabicDiacritic, arabicDiacritic);
-    }
-
-    public void extractDictionaryFromCsv(String csvFilePath, Map<String, String> dictionary) {
-        try (Reader reader = new FileReader(csvFilePath);
-                CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
-            for (CSVRecord record : csvParser) {
-                String arabic = record.get("Arabic");
-                String latin = record.get("Latin");
-                dictionary.put(arabic, latin);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        printDictionary("Dictionary", dictionary);
-    }
-
-    public void extractConsonantDictionaryFromCsv(String csvFilePath) {
-        extractDictionaryFromCsv(csvFilePath, arEnConsonantDict);
-    }
-
-    public void extractDiacriticDictionaryFromCsv(String csvFilePath) {
-        extractDictionaryFromCsv(csvFilePath, arEnDiacriticDict);
-    }
-
-    private void printDictionary(String dictionaryName, Map<String, String> dictionary) {
-        System.out.println(dictionaryName + ":");
-        System.out.println("Arabic\tLatin");
-        dictionary.forEach((arabic, latin) -> System.out.println(arabic + "\t" + latin));
-    }
-
-    public String transliterateConsonantsOnly(String arabicWord) {
-        StringBuilder englishWord = new StringBuilder();
-        for (char c : arabicWord.toCharArray()) {
-            englishWord.append(transliterateConsonant(String.valueOf(c)));
-        }
-        return englishWord.toString();
     }
 }
