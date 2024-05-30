@@ -1,12 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import MainPage from './Pages/MainPage';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
-    <div>
-      Arabic Transliterator
-    </div>
+    <MainPage title="Arabic Transliterator"/>
   );
 }
 

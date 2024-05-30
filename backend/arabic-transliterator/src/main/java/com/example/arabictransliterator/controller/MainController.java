@@ -2,6 +2,8 @@ package com.example.arabictransliterator.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.arabictransliterator.Transliterator;
@@ -30,5 +32,12 @@ public class MainController {
         return transliterator.transliterate(arabicTextWithDiacritics);
 
         // return "hello world";
+    }
+
+    @PostMapping("/")
+    public String index2(@RequestBody String requestBody) {
+        System.out.println("Request body: " + requestBody);
+
+        return requestBody;
     }
 }
