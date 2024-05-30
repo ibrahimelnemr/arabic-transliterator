@@ -69,7 +69,6 @@ public class Transliterator {
         try (Reader reader = new FileReader(csvFilePath);
                 CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
             for (CSVRecord record : csvParser) {
-                System.out.println(record);
                 String arabic = record.get("Arabic");
                 String latin = record.get("Latin");
                 dictionary.put(arabic, latin);
@@ -80,51 +79,18 @@ public class Transliterator {
         printDictionary("Dictionary", dictionary);
     }
 
-    public void extractConsonantDictionaryFromCsv2(String csvFilePath) {
+    public void extractConsonantDictionaryFromCsv(String csvFilePath) {
         extractDictionaryFromCsv(csvFilePath, arEnConsonantDict);
     }
 
-    public void extractDiacriticDictionaryFromCsv2 (String csvFilePath) {
+    public void extractDiacriticDictionaryFromCsv(String csvFilePath) {
         extractDictionaryFromCsv(csvFilePath, arEnDiacriticDict);
-    }
-
-
-    public void extractConsonantDictionaryFromCsv(String csvFilePath) {
-        try (Reader reader = new FileReader(csvFilePath);
-                CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
-            for (CSVRecord record : csvParser) {
-                System.out.println(record);
-                String arabic = record.get("Arabic");
-                String latin = record.get("Latin");
-                arEnConsonantDict.put(arabic, latin);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        printDictionary("Consonant Dictionary", arEnConsonantDict);
     }
 
     private void printDictionary(String dictionaryName, Map<String, String> dictionary) {
         System.out.println(dictionaryName + ":");
         System.out.println("Arabic\tLatin");
         dictionary.forEach((arabic, latin) -> System.out.println(arabic + "\t" + latin));
-    }
-
-    public void extractDiacriticDictionaryFromCsv(String csvFilePath) {
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
-                arEnDiacriticDict.put(data[0], data[1]);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Diacritic Dictionary:");
-        System.out.println("Arabic\tLatin");
-        for (Map.Entry<String, String> entry : arEnDiacriticDict.entrySet()) {
-            System.out.println(entry.getKey() + "\t" + entry.getValue());
-        }
     }
 
     public String transliterateConsonantsOnly(String arabicWord) {
