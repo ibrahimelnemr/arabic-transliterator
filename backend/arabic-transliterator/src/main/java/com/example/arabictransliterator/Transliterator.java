@@ -8,36 +8,40 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
 import java.io.Reader;
+import java.util.Optional;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Schema.Printer;
+import org.springframework.stereotype.Service;
 
 // import org.springframework.boot.autoconfigure.pulsar.PulsarProperties.Reader;
 // import com.opencsv.CSVParser;
 
-public class Transliterator {
-    private Map<String, String> arEnConsonantDict;
-    private Map<String, String> arEnDiacriticDict;
 
-    public Transliterator() {
-        this.arEnConsonantDict = new HashMap<>();
-        this.arEnDiacriticDict = new HashMap<>();
+public class Transliterator {
+    private Map<String, String> arEnConsonantDict = new HashMap<>();
+    private Map<String, String> arEnDiacriticDict = new HashMap<>();
+    private Map<String, String> arEnGeneralDict = new HashMap<>();
+
+    public Transliterator(String consonantDictionaryPath, String diacriticDictionaryPath) {
+        extractDictionariesFromCsv(consonantDictionaryPath, diacriticDictionaryPath);
     }
 
     // check for dictionary file
-    public String checkDictionaryFile(String filename) {
+    public static String checkDictionaryFile(String pathWithCSV) {
 
-        String pathWithCSV = Paths.get("").toAbsolutePath().getParent().getParent() + File.separator + "files"
-                + File.separator + filename;
+        // String pathWithCSV = Paths.get("").toAbsolutePath() + File.separator + filename;
 
         boolean fileOfPathWithCsv = new File(pathWithCSV).isFile();
 
         if (fileOfPathWithCsv) {
-            System.out.printf("Dictionary file found with name %s in directory %s\n", filename, pathWithCSV);
+            System.out.printf("Dictionary file found with in directory %s\n", pathWithCSV);
             return pathWithCSV;
         } else {
-            System.out.println("No file found with name " + filename + " in current or parent of parent directory");
+            System.out.printf("No dictionary file found in directory %s\n", pathWithCSV);
             return "";
         }
     }
@@ -54,17 +58,15 @@ public class Transliterator {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        printDictionary("Dictionary", dictionary);
+        // printDictionary("Dictionary", dictionary);
     }
 
-    // extract consonant dictionary from csv
-    public void extractConsonantDictionaryFromCsv(String csvFilePath) {
-        extractDictionaryFromCsv(csvFilePath, arEnConsonantDict);
-    }
-
-    // extract diacritic dictionary from csv
-    public void extractDiacriticDictionaryFromCsv(String csvFilePath) {
-        extractDictionaryFromCsv(csvFilePath, arEnDiacriticDict);
+    // extract all dictionaries from csv
+    public void extractDictionariesFromCsv(String consonantsCsvFilePath, String diacriticsCsvFilePath) {
+        extractDictionaryFromCsv(consonantsCsvFilePath, arEnConsonantDict);
+        extractDictionaryFromCsv(diacriticsCsvFilePath, arEnDiacriticDict);
+        extractDictionaryFromCsv(consonantsCsvFilePath, arEnGeneralDict);
+        extractDictionaryFromCsv(diacriticsCsvFilePath, arEnGeneralDict);
     }
 
     // print the dictionary
@@ -74,39 +76,42 @@ public class Transliterator {
         dictionary.forEach((arabic, latin) -> System.out.println(arabic + "\t" + latin));
     }
 
-    public String transliterate(String arabicText, boolean consonantsOnly) {
-        if (consonantsOnly) {
-            StringBuilder englishWord = new StringBuilder();
-            for (char c : arabicText.toCharArray()) {
-                String transliteratedConsonant = transliterateConsonant(String.valueOf(c));
-                englishWord.append(transliteratedConsonant);
+    // transliterate one character
+    public String transliterateCharacter(String arabicLetter, Map<String, String> dictionary) {
+        return dictionary.getOrDefault(arabicLetter, "");
+    }
+
+    // transliterate arabic text
+    public String transliterate(String arabicText, boolean consonantOnly) {
+        Map<String, String> dictionary;
+        ArrayList<String> arabicWords = new ArrayList<>();
+        ArrayList<String> englishWords = new ArrayList<>();
+
+        if (consonantOnly) {
+            dictionary = arEnConsonantDict;
+        } else {
+            dictionary = arEnGeneralDict;
+        }
+
+        for (String word : arabicText.split(" ")) {
+            arabicWords.add(word);
+        }
+
+        for (String arabicWord : arabicWords) {
+            StringBuilder temp = new StringBuilder();
+
+            for (char letter : arabicWord.toCharArray()) {
+                temp.append(transliterateCharacter(String.valueOf(letter), dictionary));
             }
-            return englishWord.toString();
+
+            englishWords.add(temp.toString());
         }
-
-        return "";
+        return String.join(" ", englishWords);
     }
 
-    public String removeDiacritics(String letter) {
-        StringBuilder result = new StringBuilder();
-        for (char diacritic : letter.toCharArray()) {
-            result.append(transliterateDiacritic(String.valueOf(diacritic)));
-        }
-        return result.toString();
+    // transliterate consonants and diacritics (set consonantOnly to false)
+    public String transliterate(String arabicText) {
+        return transliterate(arabicText, false);
     }
 
-    public String getBaseCharacter(String character) {
-        while (character.chars().anyMatch(c -> arEnDiacriticDict.keySet().contains(String.valueOf((char) c)))) {
-            character = removeDiacritics(character);
-        }
-        return arEnConsonantDict.getOrDefault(character, character);
-    }
-
-    public String transliterateConsonant(String arabicCharacter) {
-        return arEnConsonantDict.getOrDefault(arabicCharacter, arabicCharacter);
-    }
-
-    public String transliterateDiacritic(String arabicDiacritic) {
-        return arEnDiacriticDict.getOrDefault(arabicDiacritic, arabicDiacritic);
-    }
 }
