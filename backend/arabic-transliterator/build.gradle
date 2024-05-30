@@ -21,9 +21,16 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	 implementation 'com.opencsv:opencsv:5.5'
+	implementation 'com.opencsv:opencsv:5.5'
+	implementation 'org.apache.commons:commons-csv:1.11.0'
+	// implementation 'javax.servlet:javax.servlet-api:4.0.1'
+	// compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// application {
+//     mainClass = 'com.example.arabictransliterator.TransliteratorApp'
+// }

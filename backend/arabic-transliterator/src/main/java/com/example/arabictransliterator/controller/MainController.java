@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MainController {
     @GetMapping("/")
     public String index() {
+        System.out.println("request made to base route \"/\"");
         return "hello world";
     }
 }

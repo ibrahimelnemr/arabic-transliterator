@@ -1,10 +1,20 @@
 package com.example.arabictransliterator;
+
 import java.io.BufferedReader;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Reader;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+// import org.springframework.boot.autoconfigure.pulsar.PulsarProperties.Reader;
+// import com.opencsv.CSVParser;
 
 public class Transliterator {
     private Map<String, String> arEnConsonantDict;
@@ -16,22 +26,20 @@ public class Transliterator {
     }
 
     public String checkDictionaryFile(String filename) {
-        String currentDirectory = System.getProperty("user.dir");
-        String parentDirectory = new File(currentDirectory).getParent();
-        String parentOfParentDirectory = new File(parentDirectory).getParent();
 
-        String currentDirectoryFilePath = currentDirectory + File.separator + filename;
-        String parentOfParentDirectoryFilePath = parentOfParentDirectory + File.separator + filename;
-        if (new File(currentDirectoryFilePath).isFile()) {
-            System.out.println("Dictionary file found at " + currentDirectoryFilePath);
-            return currentDirectoryFilePath;
-        } else if (new File(parentOfParentDirectoryFilePath).isFile()) {
-            System.out.println("Dictionary file found at " + parentOfParentDirectoryFilePath);
-            return parentOfParentDirectoryFilePath;
+        String pathWithCSV = Paths.get("").toAbsolutePath().getParent().getParent() + File.separator + "files"
+                + File.separator + filename;
+
+        boolean fileOfPathWithCsv = new File(pathWithCSV).isFile();
+
+        if (fileOfPathWithCsv) {
+            System.out.printf("Dictionary file found with name %s in directory %s\n", filename, pathWithCSV);
+            return pathWithCSV;
         } else {
             System.out.println("No file found with name " + filename + " in current or parent of parent directory");
             return "";
         }
+
     }
 
     public String removeDiacritics(String character) {
@@ -57,21 +65,49 @@ public class Transliterator {
         return arEnDiacriticDict.getOrDefault(arabicDiacritic, arabicDiacritic);
     }
 
-    public void extractConsonantDictionaryFromCsv(String csvFilePath) {
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
-                arEnConsonantDict.put(data[0], data[1]);
+    public void extractDictionaryFromCsv(String csvFilePath, Map<String, String> dictionary) {
+        try (Reader reader = new FileReader(csvFilePath);
+                CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
+            for (CSVRecord record : csvParser) {
+                System.out.println(record);
+                String arabic = record.get("Arabic");
+                String latin = record.get("Latin");
+                dictionary.put(arabic, latin);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Consonant Dictionary:");
-        System.out.println("Arabic\tLatin");
-        for (Map.Entry<String, String> entry : arEnConsonantDict.entrySet()) {
-            System.out.println(entry.getKey() + "\t" + entry.getValue());
+        printDictionary("Dictionary", dictionary);
+    }
+
+    public void extractConsonantDictionaryFromCsv2(String csvFilePath) {
+        extractDictionaryFromCsv(csvFilePath, arEnConsonantDict);
+    }
+
+    public void extractDiacriticDictionaryFromCsv2 (String csvFilePath) {
+        extractDictionaryFromCsv(csvFilePath, arEnDiacriticDict);
+    }
+
+
+    public void extractConsonantDictionaryFromCsv(String csvFilePath) {
+        try (Reader reader = new FileReader(csvFilePath);
+                CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
+            for (CSVRecord record : csvParser) {
+                System.out.println(record);
+                String arabic = record.get("Arabic");
+                String latin = record.get("Latin");
+                arEnConsonantDict.put(arabic, latin);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        printDictionary("Consonant Dictionary", arEnConsonantDict);
+    }
+
+    private void printDictionary(String dictionaryName, Map<String, String> dictionary) {
+        System.out.println(dictionaryName + ":");
+        System.out.println("Arabic\tLatin");
+        dictionary.forEach((arabic, latin) -> System.out.println(arabic + "\t" + latin));
     }
 
     public void extractDiacriticDictionaryFromCsv(String csvFilePath) {
