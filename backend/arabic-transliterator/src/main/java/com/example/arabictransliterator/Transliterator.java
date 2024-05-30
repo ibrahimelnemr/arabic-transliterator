@@ -20,13 +20,17 @@ import org.springframework.stereotype.Service;
 // import org.springframework.boot.autoconfigure.pulsar.PulsarProperties.Reader;
 // import com.opencsv.CSVParser;
 
-
+@Service
 public class Transliterator {
     private Map<String, String> arEnConsonantDict = new HashMap<>();
     private Map<String, String> arEnDiacriticDict = new HashMap<>();
     private Map<String, String> arEnGeneralDict = new HashMap<>();
 
-    public Transliterator(String consonantDictionaryPath, String diacriticDictionaryPath) {
+    public Transliterator() {
+        String basePath = Paths.get("").toAbsolutePath().getParent().getParent() + File.separator + "files" + File.separator;
+        String consonantDictionaryPath = checkDictionaryFile(basePath + "Arabic Transliterator - Consonants.csv");
+        String diacriticDictionaryPath = checkDictionaryFile(basePath + "Arabic Transliterator - Vowels.csv");
+
         extractDictionariesFromCsv(consonantDictionaryPath, diacriticDictionaryPath);
     }
 

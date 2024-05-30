@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 
 @SpringBootApplication
 public class ArabicTransliteratorApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(ArabicTransliteratorApplication.class, args);
 		
@@ -16,16 +15,15 @@ public class ArabicTransliteratorApplication {
         String defaultArabicText = "اهلا وسهلا يا غالي";
         String arabicTextWithDiacritics = "أهلاً وسهلاً يا غالي";
 
-        String consonantDictionaryFileName = "Arabic Transliterator - Consonants.csv";
-        String diacriticDictionaryFileName = "Arabic Transliterator - Vowels.csv";
+        // String consonantDictionaryFileName = "Arabic Transliterator - Consonants.csv";
+        // String diacriticDictionaryFileName = "Arabic Transliterator - Vowels.csv";
         
-        String basePath = Paths.get("").toAbsolutePath().getParent().getParent() + File.separator + "files" + File.separator;
+        // String basePath = Paths.get("").toAbsolutePath().getParent().getParent() + File.separator + "files" + File.separator;
 
-        String consonantDictionaryPath = Transliterator.checkDictionaryFile(basePath + consonantDictionaryFileName);
-        String diacriticDictionaryPath = Transliterator.checkDictionaryFile(basePath + diacriticDictionaryFileName);
-
-        System.out.println("checked dictionary files");
-        Transliterator transliterator = new Transliterator(consonantDictionaryPath, diacriticDictionaryPath);
+        // String consonantDictionaryPath = Transliterator.checkDictionaryFile(basePath + consonantDictionaryFileName);
+        // String diacriticDictionaryPath = Transliterator.checkDictionaryFile(basePath + diacriticDictionaryFileName);
+        
+        Transliterator transliterator = new Transliterator();
 
         System.out.println("Default arabic text: " + defaultArabicText);
 
