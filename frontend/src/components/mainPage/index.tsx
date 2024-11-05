@@ -2,8 +2,9 @@ import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import BaseLayout from "../../layouts/baseLayout";
 
-export default function MainPage () {
+export default function MainPage() {
   const [arabicText, setArabicText] = useState<String>("");
   const title = "Arabic Transliterator";
 
@@ -30,7 +31,7 @@ export default function MainPage () {
     }
   };
   return (
-    <Container fluid className="vh-100">
+    <BaseLayout>
       <Row className="">
         <Col className="text-center m-5 h2 fw-light">{title}</Col>
       </Row>
@@ -51,6 +52,6 @@ export default function MainPage () {
           </Form>
         </Col>
       </Row>
-    </Container>
+    </BaseLayout>
   );
-};
+}
