@@ -1,6 +1,7 @@
 package com.arabize.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,8 +36,8 @@ public class MainController {
     }
 
     @PostMapping
-    public String transliterate(@RequestBody String arabicText) {
+    public ResponseEntity<String> transliterate(@RequestBody String arabicText) {
 
-        return transliterator.transliterate(arabicText);
+        return ResponseEntity.ok(transliterator.transliterate(arabicText));
     }
 }

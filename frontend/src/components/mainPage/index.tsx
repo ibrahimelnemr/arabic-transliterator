@@ -7,7 +7,6 @@ import BaseLayout from "../../layouts/baseLayout";
 export default function MainPage() {
   const [arabicText, setArabicText] = useState<string>("");
   const [transliteratedText, setTransliteratedText] = useState<string>("");
-  const title = "Arabic Transliterator";
 
   useEffect(() => {});
 
@@ -16,6 +15,9 @@ export default function MainPage() {
       const response = await axios({
         method: "post",
         url: "https://arabize-backend-latest.onrender.com/",
+        headers: {
+          "Content-Type": "application/json",
+        },
         data: {
           arabicText: arabicText,
         },
@@ -25,7 +27,7 @@ export default function MainPage() {
       console.log(response);
 
       if (response && response.data) {
-        // setTransliteratedText(response.data);
+        setTransliteratedText(response.data);
       }
     } catch (err) {
       console.log(err);
@@ -33,18 +35,18 @@ export default function MainPage() {
   };
   return (
     <BaseLayout>
-      <Row className="text-center m-5 h2 fw-light">{title}</Row>
       <Row className="text-center m-5">
-        <div>
-          {transliteratedText ? transliteratedText : "No transliteration yet"}
-        </div>
+        <div>{"Sample text: أهلاً وسهلاً يا غالي"}</div>
+      </Row>
+      <Row className="text-center m-5">
+        <div>{transliteratedText}</div>
       </Row>
       <Row className="text-center m-5">
         <Form>
           <Form.Group>
             <Form.Control
               type="text"
-              placeholder="Enter text"
+              placeholder="Enter Arabic text"
               value={arabicText}
               onChange={(e) => {
                 setArabicText(e.target.value);
