@@ -3,12 +3,9 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 
-interface MainPageProps {
-  title?: string;
-}
-
-const MainPage: React.FunctionComponent<MainPageProps> = (props) => {
+export default function MainPage () {
   const [arabicText, setArabicText] = useState<String>("");
+  const title = "Arabic Transliterator";
 
   useEffect(() => {
     getTransliteratedSentence();
@@ -35,7 +32,7 @@ const MainPage: React.FunctionComponent<MainPageProps> = (props) => {
   return (
     <Container fluid className="vh-100">
       <Row className="">
-        <Col className="text-center m-5 h2 fw-light">{props.title}</Col>
+        <Col className="text-center m-5 h2 fw-light">{title}</Col>
       </Row>
       <Row className="">
         <Col className="text-center m-5">
@@ -57,5 +54,3 @@ const MainPage: React.FunctionComponent<MainPageProps> = (props) => {
     </Container>
   );
 };
-
-export default MainPage;
