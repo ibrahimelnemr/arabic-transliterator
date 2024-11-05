@@ -1,11 +1,14 @@
-package com.example.arabictransliterator;
+package com.arabize.backend;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
@@ -27,9 +30,10 @@ public class Transliterator {
     private Map<String, String> arEnGeneralDict = new HashMap<>();
 
     public Transliterator() {
-        String basePath = Paths.get("").toAbsolutePath().getParent().getParent() + File.separator + "files" + File.separator;
-        String consonantDictionaryPath = checkDictionaryFile(basePath + "Arabic Transliterator - Consonants.csv");
-        String diacriticDictionaryPath = checkDictionaryFile(basePath + "Arabic Transliterator - Vowels.csv");
+
+        String consonantDictionaryPath = loadResourceFile("files/Arabic Transliterator - Consonants.csv");
+        
+        String diacriticDictionaryPath = loadResourceFile("files/Arabic Transliterator - Vowels.csv");
 
         extractDictionariesFromCsv(consonantDictionaryPath, diacriticDictionaryPath);
     }
@@ -37,7 +41,8 @@ public class Transliterator {
     // check for dictionary file
     public static String checkDictionaryFile(String pathWithCSV) {
 
-        // String pathWithCSV = Paths.get("").toAbsolutePath() + File.separator + filename;
+        // String pathWithCSV = Paths.get("").toAbsolutePath() + File.separator +
+        // filename;
 
         boolean fileOfPathWithCsv = new File(pathWithCSV).isFile();
 
@@ -116,6 +121,21 @@ public class Transliterator {
     // transliterate consonants and diacritics (set consonantOnly to false)
     public String transliterate(String arabicText) {
         return transliterate(arabicText, false);
+    }
+
+    private String loadResourceFile(String resourcePath) {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+            if (inputStream == null) {
+                throw new IOException("File not found: " + resourcePath);
+            }
+            File tempFile = File.createTempFile("tempFile", ".csv");
+            tempFile.deleteOnExit();
+            Files.copy(inputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            return tempFile.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
 }

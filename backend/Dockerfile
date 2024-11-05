@@ -1,4 +1,4 @@
-FROM azul/zulu-openjdk:17-latest
+FROM eclipse-temurin:20-jdk-alpine
 VOLUME /tmp
-COPY build/libs/*.jar app.jar
+COPY target/*.jar app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]

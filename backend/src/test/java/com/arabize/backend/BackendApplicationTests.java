@@ -1,10 +1,10 @@
-package com.example.arabictransliterator;
+package com.arabize.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ArabicTransliteratorApplicationTests {
+class BackendApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -16,7 +16,7 @@ export default function MainPage() {
     try {
       const response = await axios({
         method: "post",
-        url: "http://localhost:8080/",
+        url: "https://arabize-backend-latest.onrender.com/",
         data: {
           message: "request sent",
         },
@@ -32,25 +32,19 @@ export default function MainPage() {
   };
   return (
     <BaseLayout>
-      <Row className="">
-        <Col className="text-center m-5 h2 fw-light">{title}</Col>
+      <Row className="text-center m-5 h2 fw-light">{title}</Row>
+      <Row className="text-center m-5">
+        <div>{JSON.stringify(arabicText)}</div>
       </Row>
-      <Row className="">
-        <Col className="text-center m-5">
-          <div>{JSON.stringify(arabicText)}</div>
-        </Col>
-      </Row>
-      <Row className="text-center">
-        <Col className="text-center m-5">
-          <Form>
-            <Form.Group>
-              <Form.Control type="text" placeholder="Enter text" />
-            </Form.Group>
-            <Button variant="primary" onClick={() => {}}>
-              Submit
-            </Button>
-          </Form>
-        </Col>
+      <Row className="text-center m-5">
+        <Form>
+          <Form.Group>
+            <Form.Control type="text" placeholder="Enter text" />
+          </Form.Group>
+          <Button variant="primary" onClick={() => {}}>
+            Submit
+          </Button>
+        </Form>
       </Row>
     </BaseLayout>
   );
