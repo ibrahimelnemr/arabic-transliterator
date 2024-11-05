@@ -14,7 +14,7 @@ public class MainController {
     @Autowired
     private Transliterator transliterator;
 
-    @GetMapping("/")
+    @GetMapping
     public String index() {
         
         System.out.println("request made to base route \"/\"");
@@ -34,10 +34,9 @@ public class MainController {
         // return "hello world";
     }
 
-    @PostMapping("/")
-    public String index2(@RequestBody String requestBody) {
-        System.out.println("Request body: " + requestBody);
+    @PostMapping
+    public String transliterate(@RequestBody String arabicText) {
 
-        return requestBody;
+        return transliterator.transliterate(arabicText);
     }
 }
