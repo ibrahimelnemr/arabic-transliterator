@@ -4,16 +4,14 @@
 
 To start app backend locally
 
-`cd backend/ArabicTransliteratorBackend`
+`cd backend`
 
-`dotnet run watch`
+`mvn spring-boot:run`
 
 # Frontend Local Setup
 
 To start app frontend locally
 
-`cd frontend/arabic-transliterator-frontend`
+`cd frontend`
 
-`vue serve`
-
-Then open <a target="_blank" href="http://localhost:8080/">http://localhost:8080/</a> in your browser
+`npm run dev`
