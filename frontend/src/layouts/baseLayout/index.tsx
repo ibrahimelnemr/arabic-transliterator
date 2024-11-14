@@ -8,9 +8,9 @@ type BaseLayoutProps = {
 
 export default function BaseLayout({ children }: BaseLayoutProps) {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="font-extralight text-textPrimary bg-bgPrimary flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-grow flex flex-col p-0 bg-gray-100">
+      <main className="flex-grow flex flex-col p-0">
         {children}
       </main>
       <Footer />

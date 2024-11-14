@@ -3,12 +3,17 @@ import Link from "next/link";
 import NavbarLink from "./navbarLink";
 
 export default function Navbar() {
+  const navbarItems: { name: string; url: string }[] = [
+    { name: "About", url: "/" },
+    { name: "Transliterate", url: "/transliterate" },
+  ];
+
   return (
-    <nav className="bg-gray-100 border-b border-gray-200 shadow-sm">
+    <nav className="">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <a href="#" className="text-lg font-extralight text-gray-700">
-          Arabize
-        </a>
+        <div className="text-xl font-extralight">
+          <NavbarLink href="/" pageName="Arabize" />
+        </div>
 
         <button
           className="lg:hidden text-gray-600 focus:outline-none"
@@ -21,10 +26,11 @@ export default function Navbar() {
         </button>
 
         <div className="hidden lg:flex space-x-8">
-          <NavbarLink href="/about" pageName="About" />
-
-          <NavbarLink href="/transliterate" pageName="Transliterate" />
-
+          {navbarItems.map((item, index) => (
+            <div key={index}>
+              <NavbarLink href={item.url} pageName={item.name} />
+            </div>
+          ))}
         </div>
       </div>
     </nav>
