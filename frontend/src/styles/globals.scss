@@ -31,7 +31,9 @@ button, a, textarea { outline-offset: 5px; }
 .ambient-orbit { position: absolute; width: 720px; height: 720px; top: -385px; right: -240px; border: 1px solid #80d9c90c; border-radius: 50%; animation: orbit 80s linear infinite; }
 .ambient-orbit::before { content: ''; position: absolute; top: 50%; left: -3px; width: 5px; height: 5px; background: #80d9c94d; border-radius: 50%; box-shadow: 0 0 20px #80d9c93b; }
 .site-header { position: sticky; top: 0; z-index: 10; background: #0b1220db; backdrop-filter: blur(18px); border-bottom: 1px solid #25344570; }
-.header-inner { width: min(1080px, calc(100% - 80px)); margin: auto; height: 84px; display: flex; align-items: center; justify-content: flex-end; }
+.header-inner { width: min(1080px, calc(100% - 80px)); margin: auto; height: 84px; display: flex; align-items: center; justify-content: space-between; }
+.wordmark { font-size: 24px; font-weight: 650; letter-spacing: -1px; }
+.wordmark span { color: var(--accent); }
 .site-header nav { display: flex; align-items: center; gap: 34px; height: 100%; }
 .site-header nav a { height: 100%; display: flex; align-items: center; position: relative; font-size: 13px; color: var(--muted); transition: color 160ms; }
 .site-header nav a:hover, .site-header nav a[aria-current] { color: var(--text); }
@@ -112,6 +114,7 @@ h3 { font-size: 16px; font-weight: 500; margin: 0; letter-spacing: -.15px; }
   :root { scroll-padding-top: 90px; }
   .header-inner, .page-content, .site-footer { width: calc(100% - 40px); }
   .header-inner { height: 70px; }
+  .wordmark { font-size: 22px; }
   .site-header nav { gap: 24px; }
   .site-header nav a { font-size: 12px; }
   .transliterate-section { min-height: calc(100svh - 70px); padding: 56px 0 30px; }
