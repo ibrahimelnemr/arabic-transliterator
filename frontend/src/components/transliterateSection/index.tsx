@@ -18,10 +18,7 @@ export default function TransliterateSection() {
 
   return (
     <section id="transliterate" className="transliterate-section" aria-labelledby="transliterate-title">
-      <div className="tool-heading">
-        <span className="heading-rule" aria-hidden="true" />
-        <h1 id="transliterate-title">Transliterate<span className="title-dot">.</span></h1>
-      </div>
+      <h1 id="transliterate-title" className="sr-only">Transliterate</h1>
       <div className="transliterator">
         <label htmlFor="arabic-text" className="field-label">Arabic text</label>
         <div className="input-shell">
@@ -43,7 +40,6 @@ export default function TransliterateSection() {
             <span className="switch-track" aria-hidden="true"><span /></span>
             <span>Include diacritics</span>
           </label>
-          <p>Your text is processed on your device.</p>
         </div>
         <div className="result-area">
           <label htmlFor="transliteration-result" className="field-label">Transliteration</label>

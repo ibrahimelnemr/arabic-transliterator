@@ -31,9 +31,7 @@ button, a, textarea { outline-offset: 5px; }
 .ambient-orbit { position: absolute; width: 720px; height: 720px; top: -385px; right: -240px; border: 1px solid #80d9c90c; border-radius: 50%; animation: orbit 80s linear infinite; }
 .ambient-orbit::before { content: ''; position: absolute; top: 50%; left: -3px; width: 5px; height: 5px; background: #80d9c94d; border-radius: 50%; box-shadow: 0 0 20px #80d9c93b; }
 .site-header { position: sticky; top: 0; z-index: 10; background: #0b1220db; backdrop-filter: blur(18px); border-bottom: 1px solid #25344570; }
-.header-inner { width: min(1080px, calc(100% - 80px)); margin: auto; height: 84px; display: flex; align-items: center; justify-content: space-between; }
-.wordmark { font-size: 24px; font-weight: 650; letter-spacing: -1px; }
-.wordmark span { color: var(--accent); }
+.header-inner { width: min(1080px, calc(100% - 80px)); margin: auto; height: 84px; display: flex; align-items: center; justify-content: flex-end; }
 .site-header nav { display: flex; align-items: center; gap: 34px; height: 100%; }
 .site-header nav a { height: 100%; display: flex; align-items: center; position: relative; font-size: 13px; color: var(--muted); transition: color 160ms; }
 .site-header nav a:hover, .site-header nav a[aria-current] { color: var(--text); }
@@ -41,10 +39,6 @@ button, a, textarea { outline-offset: 5px; }
 .site-header nav a[aria-current]::after { transform: scaleX(1); }
 .page-content, .site-footer { width: min(1000px, calc(100% - 80px)); margin-inline: auto; }
 .transliterate-section { min-height: min(780px, calc(100svh - 84px)); display: flex; flex-direction: column; justify-content: center; padding: 72px 0 40px; }
-.tool-heading { margin-bottom: 36px; }
-.heading-rule { display: block; height: 3px; width: 30px; border-radius: 4px; background: var(--accent); margin-bottom: 24px; }
-h1 { font-size: clamp(42px, 5.6vw, 66px); font-weight: 560; letter-spacing: -3px; line-height: 1.15; margin: 0; }
-.title-dot { color: var(--accent); }
 .field-label { display: block; font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 13px; letter-spacing: .3px; }
 .input-shell { display: flex; gap: 24px; align-items: center; padding: 19px 26px 17px 28px; background: linear-gradient(120deg, #132332, #10212a); border: 1px solid #304a53; border-radius: 20px; box-shadow: 0 12px 50px #00000013; transition: border-color 200ms, box-shadow 200ms, transform 200ms; }
 .input-shell:focus-within { border-color: var(--accent); box-shadow: 0 0 0 4px #80d9c90a, 0 14px 50px #00000018; transform: translateY(-1px); }
@@ -58,7 +52,6 @@ h1 { font-size: clamp(42px, 5.6vw, 66px); font-weight: 560; letter-spacing: -3px
 .diacritics-toggle input:checked + .switch-track { background: #80d9c927; border-color: #80d9c982; }
 .diacritics-toggle input:checked + .switch-track > span { transform: translateX(15px); background: var(--accent); }
 .diacritics-toggle input:focus-visible + .switch-track { outline: 2px solid var(--accent); outline-offset: 4px; }
-.input-options p { font-size: 11px; color: var(--muted); margin: 0; }
 .result-area { padding: 36px 2px 0; margin-top: 32px; border-top: 1px solid var(--line); }
 .result-area output { display: block; min-height: 78px; font-size: clamp(26px, 3vw, 38px); font-weight: 400; line-height: 1.8; color: var(--accent); overflow-wrap: anywhere; white-space: pre-wrap; }
 .result-text { display: block; animation: result-in 220ms ease-out both; }
@@ -119,13 +112,9 @@ h3 { font-size: 16px; font-weight: 500; margin: 0; letter-spacing: -.15px; }
   :root { scroll-padding-top: 90px; }
   .header-inner, .page-content, .site-footer { width: calc(100% - 40px); }
   .header-inner { height: 70px; }
-  .wordmark { font-size: 22px; }
   .site-header nav { gap: 24px; }
   .site-header nav a { font-size: 12px; }
   .transliterate-section { min-height: calc(100svh - 70px); padding: 56px 0 30px; }
-  h1 { font-size: clamp(37px, 10vw, 54px); letter-spacing: -2px; }
-  .tool-heading { margin-bottom: 32px; }
-  .heading-rule { margin-bottom: 20px; }
   .input-shell { padding: 15px 18px; gap: 14px; border-radius: 15px; }
   .input-shell textarea { font-size: 32px; min-height: 60px; }
   .input-symbol { font-size: 22px; }

@@ -15,7 +15,6 @@ export default function Navbar() {
   return (
     <header className="site-header">
       <div className="header-inner">
-        <a className="wordmark" href="#transliterate">Arabize<span aria-hidden="true">.</span></a>
         <nav aria-label="Main navigation">
           {[{ id: "transliterate", label: "Transliterate" }, { id: "about", label: "About" }].map(item => (
             <a key={item.id} href={`#${item.id}`} aria-current={active === item.id ? "location" : undefined}>{item.label}</a>
