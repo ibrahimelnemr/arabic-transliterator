@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import NavbarLink from "./navbarLink";
 
 export default function Navbar() {
@@ -15,17 +14,7 @@ export default function Navbar() {
           <NavbarLink href="/" pageName="Arabize" />
         </div>
 
-        <button
-          className="lg:hidden text-gray-600 focus:outline-none"
-          type="button"
-          aria-label="Toggle navigation"
-          data-bs-toggle="collapse"
-          data-bs-target="#navmenu"
-        >
-          <span className="material-icons">menu</span>
-        </button>
-
-        <div className="hidden lg:flex space-x-8">
+        <div className="flex gap-5 sm:gap-8">
           {navbarItems.map((item, index) => (
             <div key={index}>
               <NavbarLink href={item.url} pageName={item.name} />

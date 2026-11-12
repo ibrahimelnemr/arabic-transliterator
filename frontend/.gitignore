@@ -26,4 +26,6 @@ yarn-error.log*
 
 .next
 .out
+/out
+*.tsbuildinfo
 /public/static

@@ -1,83 +1,39 @@
-import axios from "axios";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Section from "../section";
-import { apiUrl } from "../../data/constants";
+import { transliterate } from "../../lib/transliterate";
 
 export default function TransliterateSection() {
-  const [arabicText, setArabicText] = useState<string>("أهلاً وسهلاً يا غالي");
-  const [transliteratedText, setTransliteratedText] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [arabicText, setArabicText] = useState("أهلاً وسهلاً يا غالي");
+  const [transliteratedText, setTransliteratedText] = useState("");
+  const [includeDiacritics, setIncludeDiacritics] = useState(true);
 
-  const getTransliteratedSentence = async (arabicText: string) => {
-    try {
-
-      setIsLoading(true);
-
-      console.log(`Sending request to server`);
-
-      const response = await axios({
-        method: "post",
-        url: apiUrl,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: {
-          arabicText: arabicText,
-        },
-      });
-
-      console.log(response);
-
-      setIsLoading(false);
-
-      if (response && response.data) {
-        setTransliteratedText(response.data);
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setTransliteratedText(transliterate(arabicText, { includeDiacritics }));
+  }
 
   return (
-    <Section sectionName="">
-      <div>
-        <div className="text-center text-xl mb-6">
-          {"Sample text: أهلاً وسهلاً يا غالي"}
-        </div>
-
-        <div className="text-center text-lg mb-6">
-          {isLoading && (
-            <div className="flex flex-col items-center">
-              <p>Loading...</p>
-              <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          )}
-          {!isLoading && transliteratedText}
-        </div>
-
-        <div className="flex justify-center">
-          <div className="w-full max-w-md">
-            <input
-              className="bg-gray-100 w-full text-gray-600 px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              type="text"
-              value={arabicText}
-              onChange={(e) => {
-                setArabicText(e.target.value);
-              }}
-            />
-            <button
-              onClick={() => {
-                getTransliteratedSentence(arabicText);
-              }}
-              className="w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              Submit
-            </button>
-          </div>
-        </div>
-      </div>
+    <Section sectionName="Transliterate">
+      <form onSubmit={submit} className="w-full max-w-xl mx-auto">
+        <label htmlFor="arabic-text" className="block text-lg mb-3">Arabic text</label>
+        <textarea
+          id="arabic-text"
+          lang="ar"
+          dir="auto"
+          rows={5}
+          className="bg-gray-100 w-full text-gray-800 px-4 py-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={arabicText}
+          onChange={event => setArabicText(event.target.value)}
+        />
+        <label className="flex items-center gap-3 mb-5">
+          <input type="checkbox" checked={includeDiacritics} onChange={event => setIncludeDiacritics(event.target.checked)} />
+          Include diacritics
+        </label>
+        <button type="submit" className="w-full px-4 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Transliterate</button>
+        <p className="text-sm mt-3 mb-6">Your text is processed on your device.</p>
+        <label htmlFor="transliteration-result" className="block text-lg mb-3">Transliteration</label>
+        <output id="transliteration-result" dir="ltr" aria-live="polite" className="block whitespace-pre-wrap break-words bg-gray-700 p-4 rounded-md min-h-20 text-xl">{transliteratedText}</output>
+      </form>
     </Section>
   );
 }

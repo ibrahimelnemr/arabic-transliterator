@@ -25,7 +25,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "prebuild": "node scripts/generate-dictionary.cjs",
+    "test": "node --test tests/*.test.cjs"
   },
   "eslintConfig": {
     "extends": [
