@@ -1,11 +1,3 @@
-import React from "react";
-
 export default function Footer() {
-  return (
-    <footer className="py-4 text-center">
-      <p className="font-extralight">
-        Built with React and Tailwind CSS
-      </p>
-    </footer>
-  );
+  return <footer className="site-footer"><p>Built with React and Tailwind CSS</p><a href="#transliterate" aria-label="Transliterate">↑</a></footer>;
 }

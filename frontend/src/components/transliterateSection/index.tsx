@@ -1,39 +1,58 @@
-import React, { FormEvent, useState } from "react";
-import Section from "../section";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { transliterate } from "../../lib/transliterate";
 
 export default function TransliterateSection() {
   const [arabicText, setArabicText] = useState("أهلاً وسهلاً يا غالي");
-  const [transliteratedText, setTransliteratedText] = useState("");
   const [includeDiacritics, setIncludeDiacritics] = useState(true);
+  const input = useRef<HTMLTextAreaElement>(null);
+  const result = useMemo(
+    () => transliterate(arabicText, { includeDiacritics }),
+    [arabicText, includeDiacritics],
+  );
 
-  function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setTransliteratedText(transliterate(arabicText, { includeDiacritics }));
-  }
+  useEffect(() => {
+    if (!input.current) return;
+    input.current.style.height = "auto";
+    input.current.style.height = `${Math.min(input.current.scrollHeight, 260)}px`;
+  }, [arabicText]);
 
   return (
-    <Section sectionName="Transliterate">
-      <form onSubmit={submit} className="w-full max-w-xl mx-auto">
-        <label htmlFor="arabic-text" className="block text-lg mb-3">Arabic text</label>
-        <textarea
-          id="arabic-text"
-          lang="ar"
-          dir="auto"
-          rows={5}
-          className="bg-gray-100 w-full text-gray-800 px-4 py-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={arabicText}
-          onChange={event => setArabicText(event.target.value)}
-        />
-        <label className="flex items-center gap-3 mb-5">
-          <input type="checkbox" checked={includeDiacritics} onChange={event => setIncludeDiacritics(event.target.checked)} />
-          Include diacritics
-        </label>
-        <button type="submit" className="w-full px-4 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Transliterate</button>
-        <p className="text-sm mt-3 mb-6">Your text is processed on your device.</p>
-        <label htmlFor="transliteration-result" className="block text-lg mb-3">Transliteration</label>
-        <output id="transliteration-result" dir="ltr" aria-live="polite" className="block whitespace-pre-wrap break-words bg-gray-700 p-4 rounded-md min-h-20 text-xl">{transliteratedText}</output>
-      </form>
-    </Section>
+    <section id="transliterate" className="transliterate-section" aria-labelledby="transliterate-title">
+      <div className="tool-heading">
+        <span className="heading-rule" aria-hidden="true" />
+        <h1 id="transliterate-title">Transliterate<span className="title-dot">.</span></h1>
+      </div>
+      <div className="transliterator">
+        <label htmlFor="arabic-text" className="field-label">Arabic text</label>
+        <div className="input-shell">
+          <textarea
+            ref={input}
+            id="arabic-text"
+            lang="ar"
+            dir="auto"
+            rows={1}
+            spellCheck={false}
+            value={arabicText}
+            onChange={event => setArabicText(event.target.value)}
+          />
+          <span className="input-symbol" aria-hidden="true">↗</span>
+        </div>
+        <div className="input-options">
+          <label className="diacritics-toggle">
+            <input type="checkbox" role="switch" checked={includeDiacritics} onChange={event => setIncludeDiacritics(event.target.checked)} />
+            <span className="switch-track" aria-hidden="true"><span /></span>
+            <span>Include diacritics</span>
+          </label>
+          <p>Your text is processed on your device.</p>
+        </div>
+        <div className="result-area">
+          <label htmlFor="transliteration-result" className="field-label">Transliteration</label>
+          <output id="transliteration-result" dir="ltr" aria-live="polite" aria-atomic="true">
+            <span key={result} className="result-text">{result || "\u00a0"}</span>
+          </output>
+        </div>
+      </div>
+      <a className="scroll-link" href="#about">About <span aria-hidden="true">↓</span></a>
+    </section>
   );
 }

@@ -1,27 +1,27 @@
-import React from "react";
-import NavbarLink from "./navbarLink";
+import React, { useEffect, useState } from "react";
 
 export default function Navbar() {
-  const navbarItems: { name: string; url: string }[] = [
-    { name: "About", url: "/" },
-    { name: "Transliterate", url: "/transliterate" },
-  ];
+  const [active, setActive] = useState("transliterate");
+  useEffect(() => {
+    const onScroll = () => {
+      const about = document.getElementById("about");
+      setActive(about && about.getBoundingClientRect().top < window.innerHeight * 0.4 ? "about" : "transliterate");
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <nav className="">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <div className="text-xl font-extralight">
-          <NavbarLink href="/" pageName="Arabize" />
-        </div>
-
-        <div className="flex gap-5 sm:gap-8">
-          {navbarItems.map((item, index) => (
-            <div key={index}>
-              <NavbarLink href={item.url} pageName={item.name} />
-            </div>
+    <header className="site-header">
+      <div className="header-inner">
+        <a className="wordmark" href="#transliterate">Arabize<span aria-hidden="true">.</span></a>
+        <nav aria-label="Main navigation">
+          {[{ id: "transliterate", label: "Transliterate" }, { id: "about", label: "About" }].map(item => (
+            <a key={item.id} href={`#${item.id}`} aria-current={active === item.id ? "location" : undefined}>{item.label}</a>
           ))}
-        </div>
+        </nav>
       </div>
-    </nav>
+    </header>
   );
 }

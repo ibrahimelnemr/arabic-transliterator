@@ -1,10 +1,11 @@
-import TransliterateSection from "../components/transliterateSection";
-import BaseLayout from "../layouts/baseLayout";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import Home from "./index";
 
 export default function Transliterate() {
-  return (
-    <BaseLayout>
-      <TransliterateSection />
-    </BaseLayout>
-  );
+  const router = useRouter();
+  useEffect(() => {
+    void router.replace("/#transliterate", undefined, { scroll: false });
+  }, [router]);
+  return <Home />;
 }
